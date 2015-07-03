@@ -13,8 +13,6 @@ def hello():
 
 @begin.start
 @begin.logging
-@begin.convert(port=int)
-def main(hostname='0.0.0.0', port=8080):
-
-
-        run(host='localhost', port=8080, debug=True)
+@begin.convert(port=int, debug=bool)
+def main(hostname='0.0.0.0', port=8080, debug=True):
+        run(host=hostname, port=port, debug=debug)
