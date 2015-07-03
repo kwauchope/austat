@@ -1,10 +1,20 @@
 #!/usr/bin/env python
 
 
+from os import path
 import logging
 
 import begin
-from bottle import route, run
+from bottle import route, run, static_file
+
+BASE_DIR = path.dirname(path.realpath(__file__))
+STATIC_PATH = path.join(BASE_DIR, 'static')
+
+
+@route('/static/<filename>')
+def server_static(filename):
+    return static_file(filename, root=STATIC_PATH)
+
 
 @route('/hello')
 def hello():
