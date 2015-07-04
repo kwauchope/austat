@@ -7,8 +7,7 @@ class csvdatasource(datasource):
     #csvlocation = None
 
     def __init__(self):
-        self.locations = []
-        self.datasets = []
+        datasource.__init__(self)
     #    csvlocation = "../../data/"
 
     def loadCSV(self, category):
@@ -36,6 +35,6 @@ class csvdatasource(datasource):
                 #have to loop due to data layout
                 for loc in self.locations:
                     if loc['name'] == row['Location']:
-                        loc.values[row['Key']] = row['Value']
+                        loc['values'][row['Key']] = row['Value']
                         break
 
