@@ -9,10 +9,10 @@ class datasource:
     def getstats(self):
         return self.stats
 
-    def getrandomstat(self,n):
-        return self.getstat(self.stats[random.randint(0,len(self.stats)-1)], n)
+    def getrandomstat(self, n):
+        return self.getstat(self.stats[random.randint(0, len(self.stats)-1)], n)
 
     @abstractmethod
-    def getstat(self,stat,n):
+    def getstat(self, stat, n):
         pass
 
