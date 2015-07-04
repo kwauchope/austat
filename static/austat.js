@@ -16,7 +16,18 @@ var answer = {
         details: 'Some details about the answer.'
     }
 }
+
+var sources = {
+   names:['nothing', 'nothing1']
+}
+
 $(document).ready(function(){
+    $(".button-collapse").sideNav({
+        menuWidth: 300
+    });
+
+    generateTopics();
+
     var tmpl = $('#question-template').html();
     var html = Mustache.render(tmpl, question);
     $('#question').html(html);
@@ -28,6 +39,13 @@ $(document).ready(function(){
         return false;
     });
 });
+
+function generateTopics(){
+    template = $('#topics-template').html();
+    html = Mustache.render(template, sources.names);
+    $('#topics').html(html)
+}
+
 function results(selected){
     if ('answer_' + answer.answer.id === selected){
         answer.answer.correct = true;

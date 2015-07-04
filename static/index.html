@@ -8,22 +8,51 @@
     </head>
     <body>
         <nav>
-            <div class="nav-wrapper">
+            <div>
+                <a href="#" data-activates="side-nav" class="button-collapse tooltipped show-on-large" data-position="right" data-delay="10" data-tooltip="Topic Selector"><i class="mdi-navigation-menu"></i></a>
+                <div id="side-nav" class="side-nav blue-grey-text">
+                        <h5 class="center-align">Topics</h5>
+                        <ul id="topics">
+                </div>
+            </div>
+            <div class="nav-wrapper blue-grey">
                 <a href="#" class="brand-logo" style="padding-left:20px;">AUSTAT</a>
             </div>
         </nav>
+               
+        
         <div class="row">
-            <div class="col m12">
-                <div class="card">
-                    <div class="card-content">
-                        <div id="question"></div>
-                    </div>
-                    <div class="card-reveal">
-                        <div id="answer"></div>
+            <div class="container">
+                <div class="col l12 m12 s12">
+                    <div class="card-panel">
+                        <div class="card-content">
+                            <div id="question"></div>
+                        </div>
+                        <div class="card-reveal">
+                            <div id="answer"></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <script id="topics-template" type="x-tmpl-mustache">
+            {{#.}}
+            <li>
+                <div class="row">
+                    <div class="col m7">{{.}}</div>
+                    <span class="switch">
+                        <label>
+                            On
+                            <input type="checkbox">
+                            <span class="lever"></span>
+                            Off
+                        </label>
+                    </span>
+                </div>
+            </li>
+            {{/.}}
+        </script>
         <script id="answer-template" type="x-tmpl-mustache">
             <div class="row">
                 {{#answer.correct}}
