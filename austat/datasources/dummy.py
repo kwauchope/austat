@@ -17,4 +17,6 @@ class dummy(datasource):
                                                                     "electorate" : "Melbourne"
                                                                    }
                           }]
+        self.cleanemptylocations()
+        self.cleanemptydatasets()
 

@@ -21,6 +21,7 @@ def test_locations():
         ids = []
         for location in locs:
             assert(lockeys.issubset(set(location.keys())))
+            assert(len(location['values'].keys()) > 0)
             ids.append(location['id'])
         #ensure ids are unique
         assert(len(ids) == len(set(ids)))

@@ -37,4 +37,6 @@ class csvdatasource(datasource):
                     if loc['name'] == row['Location']:
                         loc['values'][row['Key']] = row['Value']
                         break
+        self.cleanemptylocations()
+        self.cleanemptydatasets()
 

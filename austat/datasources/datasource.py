@@ -10,6 +10,13 @@ class datasource(object):
             raise ValueError('A name is required for a datasource')
         self.name = name
 
+    #clean datasets so don't get crap stuff
+    def cleanemptydatasets(self):
+	self.datasets = [y for (x,y) in enumerate(self.datasets) if len(self.getrandomlocations(x, 2)) >= 2]
+
+    #clean empty locations to save mem
+    def cleanemptylocations(self):
+        self.locations = filter ( lambda x : len(x['values'].keys()) != 0, self.locations)
 
     def getlocations(self):
         return self.locations
