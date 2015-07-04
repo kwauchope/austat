@@ -79,16 +79,16 @@
         </script>
         <script id="checkbox-template" type="x-tmpl-mustache">
             <div class="row">
-                <h4>{{question}}?</h4>
+                <h4>{{question}}</h4>
             </div>
             <form>
                 <div class="row">
-                    {{#answers}}
+                    {{#locations}}
                     <p>
-                        <input class="with-gap" name="answers" type="radio" id="answer_{{id}}" />
-                        <label for="answer_{{id}}">{{answer}}</label>
+                        <input class="with-gap" name="answers" type="radio" question="{{id}}" id="answer_{{id}}" />
+                        <label for="answer_{{id}}">{{name}}</label>
                     </p>
-                    {{/answers}}
+                    {{/locations}}
                 </div>
             </form>
         </script>

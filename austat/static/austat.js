@@ -1,71 +1,3 @@
-var questions = [
-    {
-        question: 'How lame is Ben',
-        type: 'CHECKBOX',
-        answers: [
-            {id: 1, answer: 'Not Really'},
-            {id: 2, answer: 'A Bit'},
-            {id: 3, answer: 'Heaps'},
-            {id: 4, answer: 'Lamest Person Ever'},
-            {id: 5, answer: 'Doesnt Know What JSON Is?'}
-        ]
-    },
-    {
-        question: 'Which university does Ben own?',
-        type: 'MAP',
-        answers: [{ 
-            "id": 1, 
-            "geom":{
-                "type": "Feature",
-                "properties": {
-                    "name": "Coors Field",
-                    "amenity": "Baseball Stadium",
-                    "popupContent": "This is where the Rockies play!"
-                },
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [-104.99404, 39.75621]
-                }
-            }
-        },
-        { 
-            "id" : 2, 
-            "geom" : {
-                "type": "Feature",
-                "properties": {
-                    "name": "Coors Field",
-                    "amenity": "Baseball Stadium",
-                    "popupContent": "This is where the Rockies play!"
-                },
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [-102.99404, 39.75621]
-                }
-            }
-        },
-        { 
-            'id' : 3, 
-            'point': {
-                "type": "Feature",
-                "properties": {"party": "Republican"},
-                "geometry": {
-                    "type": "Polygon",
-                    "coordinates": [[
-                        [-104.05, 48.99],
-                        [-97.22,  48.98],
-                        [-96.58,  45.94],
-                        [-104.03, 45.94],
-                        [-104.05, 48.99]
-                    ]]
-                }
-            } 
-        }
-            
-        ]
-    }
-]
-
-
 var answer = {
     answer: {
         id: 5,
@@ -92,11 +24,11 @@ $(document).ready(function(){
         menuWidth: 300
     });
     makeTopics();
-    questionSetup();
+    makeQuestion();
 
 });
 
-function checkboxSetup(question){
+function checkboxQuestion(question){
     var tmpl = $('#checkbox-template').html();
     var html = Mustache.render(tmpl, question);
     $('#question').html(html);
@@ -112,17 +44,43 @@ function mapSetup(question){
     $('#map').closest('.card').slideDown();
     addPlacemarks(question);
 }
-function questionSetup(){
-    var question = questions[Math.floor(Math.random()*questions.length)];
-    if(question.type === 'CHECKBOX'){
-        checkboxSetup(question);
-    }
-    else if (question.type === 'MAP'){
-        mapSetup(question);
-    }
+function fixQuestion(q){
+    console.log(q);
+    return q.replace(/{/g, '{{').replace(/}/g, '}}');
+}
+function makeQuestion(){
+    var topic = getRandomTopic();
+    $.ajax({
+        url: '/query/' + topic,
+        success: function(q){
+            q.question = fixQuestion(q.question);
+            q.question = Mustache.render(q.question, getRandomItem(q.locations))
+            checkboxQuestion(q);
+            //var template = $('#topics-template').html();
+            //var html = Mustache.render(template, topics);
+            //$('#topics').html(html)
+        }
+    });
+    //var question = questions[Math.floor(Math.random()*questions.length)];
+    //if(question.type === 'CHECKBOX'){
+    //    checkboxSetup(question);
+    //}
+    //else if (question.type === 'MAP'){
+    //    mapSetup(question);
+    //}
 }
 
-function getTopics(){
+function getRandomItem(list){
+    return list[Math.floor(Math.random()*list.length)];
+}
+
+function getRandomTopic(){
+    // Get a random topic.
+    topics = getAllTopics();
+    return topics[Math.floor(Math.random()*topics.length)];
+}
+
+function getAllTopics(){
     // Get a list of ids for selected topics.
     var topics = [];
     $('input[name=topic]').each(function(i, topic){
@@ -132,12 +90,13 @@ function getTopics(){
     });
     return topics;
 }
+
 function makeTopics(){
     // Get topics from api and create controls.
     $.ajax({
+        async: false,
         url: '/topics',
         success: function(topics){
-            console.log(topics);
             var template = $('#topics-template').html();
             var html = Mustache.render(template, topics);
             $('#topics').html(html)
@@ -157,6 +116,7 @@ function results(selected){
     var html = Mustache.render(tmpl, answer);
     $('#answer').html(html);
     $('#answer #next').click(function(){
+        makeQuestion()
         $(this).closest('.card').slideUp(function(){
             $('#question').closest('.card').slideDown();
         });
