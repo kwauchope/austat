@@ -2,7 +2,6 @@
 
 
 from os import path
-import logging
 
 import begin
 from bottle import route, run, static_file
@@ -23,6 +22,17 @@ def hello():
 
 @begin.start
 @begin.logging
-@begin.convert(port=int, debug=bool)
-def main(hostname='0.0.0.0', port=8080, debug=True):
-        run(host=hostname, port=port, debug=debug)
+@begin.convert(port=int, debug=bool, dev=bool)
+def main(hostname='0.0.0.0', port=8080, dev=True, debug=True):
+    """
+    Start up the service
+
+    hostname: Defines what ip and consequently which interface to bind to.
+
+    port: The service port
+
+    dev: Runs bottle with auto reloading enabled
+
+    debug: Log requests
+    """
+    run(host=hostname, port=port, debug=debug, reloader=dev)
