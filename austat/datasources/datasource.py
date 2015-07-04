@@ -3,9 +3,13 @@ import random
 
 class datasource(object):
 
-    def __init__(self):
+    def __init__(self, name):
         self.datasets = []
         self.locations = []
+        if not name:
+            raise ValueError('A name is required for a datasource')
+        self.name = name
+
 
     def getlocations(self):
         return self.locations

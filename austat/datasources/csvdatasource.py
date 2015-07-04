@@ -6,8 +6,8 @@ class csvdatasource(datasource):
 
     #csvlocation = None
 
-    def __init__(self):
-        datasource.__init__(self)
+    def __init__(self, name):
+        datasource.__init__(self, name)
     #    csvlocation = "../../data/"
 
     def loadCSV(self, category):
