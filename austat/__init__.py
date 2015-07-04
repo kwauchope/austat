@@ -6,6 +6,7 @@ from os import path
 import begin
 from bottle import run, static_file
 import bottle
+from controllers.leaderboard import leaderboardApp
 
 
 BASE_DIR = path.dirname(path.realpath(__file__))
@@ -40,4 +41,5 @@ def main(hostname='0.0.0.0', port=8080, dev=True, debug=True):
 
     debug: Log requests
     """
-    run(host=hostname, port=port, debug=debug, reloader=dev, app=app)
+    app.merge(leaderboardApp)
+    app.run(host=hostname, port=port, debug=debug, reloader=dev)
