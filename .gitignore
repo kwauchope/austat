@@ -1,5 +1,0 @@
-build
-.eggs/
-*.egg-info/
-.coverage
-*.pyc
