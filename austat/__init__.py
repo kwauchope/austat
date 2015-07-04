@@ -8,6 +8,7 @@ from bottle import run, static_file
 import bottle
 from controllers.leaderboard import leaderboardApp
 from controllers.topics import topicsApp
+from controllers.query import queryApp
 
 
 BASE_DIR = path.dirname(path.realpath(__file__))
@@ -44,4 +45,5 @@ def main(hostname='0.0.0.0', port=8080, dev=True, debug=True):
     """
     app.merge(leaderboardApp)
     app.merge(topicsApp)
+    app.merge(queryApp)
     app.run(host=hostname, port=port, debug=debug, reloader=dev)
