@@ -45,19 +45,21 @@ def test_getrandomlocations():
         #assert_raises(Exception, source, getrandomlocations, 0)
         #assert_raises(Exception, source, getrandomlocations, -1)
         if numlocs > 1:
-            randomlocs = getlocationids(source.getrandomlocations(numlocs))
-            #ensure get unique locations
-            assert(len(set(randomlocs)) == len(randomlocs))
-            #can't return more than have
-            assert(len(randomlocs) <= numlocs)
+            datasets = source.getdatasets()
+            for i in range(0,len(datasets)):
+                randomlocs = getlocationids(source.getrandomlocations(i, numlocs))
+                #ensure get unique locations
+                assert(len(set(randomlocs)) == len(randomlocs))
+                #can't return more than have
+                assert(len(randomlocs) <= numlocs)
 
 def test_getstat():
-    for datasource in getsources():
-        numlocs = len(datasource.getlocations())
-        datasets = datasource.getdatasets()
+    for source in getsources():
+        numlocs = len(source.getlocations())
+        datasets = source.getdatasets()
         if numlocs > 1:
             for i in range(0, len(datasets)):
-                res = datasource.getstat(i,numlocations)
+                res = source.getstat(i,numlocs)
                 assert(res['question'] is not None)
                 assert(res['locations'] is not None)
 

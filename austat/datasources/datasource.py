@@ -1,9 +1,13 @@
 import random
 
-class datasource:
+class datasource(object):
 
-    datasets = []
-    locations = []
+    datasets = None
+    locations = None
+
+    def __init__(self):
+        datasets = []
+        locations = []
 
     def getlocations(self):
         return self.locations
@@ -12,6 +16,8 @@ class datasource:
         return self.datasets
 
     def getrandomstat(self, n):
+        if len(self.datasets) == 0:
+            return []
         return self.getstat(random.randint(0, len(self.datasets)-1), n)
 
     #could add per stat stdev as an arg to make sure all diff
@@ -47,6 +53,6 @@ class datasource:
                                 "name" : loc['name'],
                                 "value" : loc['values'][key],
                                 "geometry" : loc['geometry'],
-                              })
-        return { 'question' : self.datasets[datasetid]['question'] , "locations" : results }
+                               })
+        return {'question' : self.datasets[datasetid]['question'], "locations" : results }
 

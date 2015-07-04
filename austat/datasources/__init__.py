@@ -1,4 +1,4 @@
-__all__ = ["dummy"]
+__all__ = ["dummy", "demographics"]
 
 def getsources():
     sources = []
