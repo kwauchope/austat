@@ -2,7 +2,10 @@ import bottle
 from bottle import request, response, abort
 import json
 
-from datasources import available_sources
+try:
+    from datasources import available_sources
+except ImportError:
+    from austat.datasources import available_sources
 
 topicsApp = bottle.Bottle()
 
