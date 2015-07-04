@@ -1,13 +1,11 @@
 import random
 
+
 class datasource(object):
 
-    datasets = None
-    locations = None
-
     def __init__(self):
-        datasets = []
-        locations = []
+        self.datasets = []
+        self.locations = []
 
     def getlocations(self):
         return self.locations
@@ -20,7 +18,7 @@ class datasource(object):
             return []
         return self.getstat(random.randint(0, len(self.datasets)-1), n)
 
-    #could add per stat stdev as an arg to make sure all diff
+    # TODO: could add per stat stdev as an arg to make sure all diff
     def getrandomlocations(self, datasetid, n):
         if n <= 0:
             raise Exception("Need to get at least one location")
@@ -41,18 +39,16 @@ class datasource(object):
 
     def getstat(self, datasetid, n):
         results = []
-        locs = self.getrandomlocations(datasetid,n)
-        #could be 0
+        locs = self.getrandomlocations(datasetid, n)
         if len(locs) > 0:
             key = self.datasets[datasetid]['key']
             for loc in locs:
-                #don't always have to have an associated value for every location
-                #assume most will though
-                #if don't this will break
-                results.append({"id" : loc['id'],
-                                "name" : loc['name'],
-                                "value" : loc['values'][key],
-                                "geometry" : loc['geometry'],
-                               })
-        return {'question' : self.datasets[datasetid]['question'], "locations" : results }
-
+                # don't always have to have an associated value for every
+                # location assume most will though if don't this will break
+                results.append({"id": loc['id'],
+                                "name": loc['name'],
+                                "value": loc['values'][key],
+                                "geometry": loc['geometry'],
+                                })
+        return {'question': self.datasets[datasetid]['question'],
+                "locations": results}

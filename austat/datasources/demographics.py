@@ -1,4 +1,5 @@
-from csvdatasource import csvdatasource
+from .csvdatasource import csvdatasource
+
 
 class demographics(csvdatasource):
 
