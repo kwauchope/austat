@@ -1,0 +1,70 @@
+#generic datasource test
+
+from austat import datasources
+from nose.tools import assert_raises
+
+#Only initialise each list once as can be dynamic with URL calls etc
+_globals = {'dslist' : None}
+
+def getsources():
+    if _globals['dslist'] is None:
+        dslist = datasources.getsources()
+    return dslist
+
+def test_getsources():
+    getsources()
+
+def test_locations():
+    lockeys = set(['id', 'name', 'geometry', 'values'])
+    for source in getsources():
+        locs = source.getlocations()
+        ids = []
+        for location in locs:
+            assert(lockeys.issubset(set(location.keys())))
+            ids.append(location['id'])
+        #ensure ids are unique
+        assert(len(ids) == len(set(ids)))
+
+def test_datasets():
+    datakeys = set(['key', 'question'])
+    for source in getsources():
+       for dataset in source.getdatasets():
+            assert(datakeys.issubset(set(dataset.keys())))
+
+def getlocationids(locs):
+    ids = []
+    for loc in locs:
+        ids.append(loc['id'])
+    return ids
+
+def test_getrandomlocations():
+    for source in getsources():
+        locs = source.getlocations()
+        numlocs = len(locs)
+        #can't see mothod - due to dynamic loading?
+        #assert_raises(Exception, source, getrandomlocations, 0)
+        #assert_raises(Exception, source, getrandomlocations, -1)
+        if numlocs > 1:
+            datasets = source.getdatasets()
+            for i in range(0,len(datasets)):
+                randomlocs = getlocationids(source.getrandomlocations(i, numlocs))
+                #ensure get unique locations
+                assert(len(set(randomlocs)) == len(randomlocs))
+                #can't return more than have
+                assert(len(randomlocs) <= numlocs)
+
+def test_getstat():
+    for source in getsources():
+        numlocs = len(source.getlocations())
+        datasets = source.getdatasets()
+        if numlocs > 1:
+            for i in range(0, len(datasets)):
+                res = source.getstat(i,numlocs)
+                assert(res['question'] is not None)
+                assert(res['locations'] is not None)
+
+def test_getrandomstat():
+    for datasource in getsources():
+        numlocs = len(datasource.getlocations())
+        if numlocs > 1:
+            assert(len(datasource.getrandomstat(numlocs-1)) <= numlocs -1)
