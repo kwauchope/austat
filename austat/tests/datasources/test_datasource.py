@@ -18,6 +18,7 @@ def test_locations():
     lockeys = set(['id', 'name', 'geometry', 'values'])
     for source in getsources():
         locs = source.getlocations()
+        assert(len(locs) > 0)
         ids = []
         for location in locs:
             assert(lockeys.issubset(set(location.keys())))
@@ -29,7 +30,9 @@ def test_locations():
 def test_datasets():
     datakeys = set(['key', 'question'])
     for source in getsources():
-        for dataset in source.getdatasets():
+        datasets = source.getdatasets()
+        assert(len(datasets) > 0)
+        for dataset in datasets:
             assert(datakeys.issubset(set(dataset.keys())))
 
 def getlocationids(locs):
@@ -42,12 +45,12 @@ def test_getrandomlocations():
     for source in getsources():
         locs = source.getlocations()
         numlocs = len(locs)
-        #can't see mothod - due to dynamic loading?
-        #assert_raises(Exception, source, getrandomlocations, 0)
-        #assert_raises(Exception, source, getrandomlocations, -1)
         if numlocs > 1:
             datasets = source.getdatasets()
             for i in range(0, len(datasets)):
+                #can't see method - due to dynamic loading?
+                #assert_raises(Exception, source, getrandomlocations, i, 0)
+                #assert_raises(Exception, source, getrandomlocations, i, -1)
                 randomlocs = getlocationids(source.getrandomlocations(i, numlocs))
                 #ensure get unique locations
                 assert(len(set(randomlocs)) == len(randomlocs))
