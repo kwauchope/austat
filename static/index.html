@@ -4,7 +4,10 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.1.2/mustache.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/js/materialize.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/css/materialize.min.css">
+        <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
         <script src="austat.js"></script>
+        <link rel="stylesheet" href="map.css">
     </head>
     <body>
         <nav>
@@ -20,11 +23,14 @@
             </div>
         </nav>
                
-        
         <div class="row">
             <div class="container">
                 <div class="col l12 m12 s12">
-                    <div class="card">
+                    <div class="card" style="display:None">
+                        <span class="text-darken-2 center-align"><h3>What area is grant the lamest in?</h3></span>
+                        <div id="map"></div>
+                    </div>
+                    <div class="card" style="display:None">
                         <div class="card-content">
                             <div id="question"></div>
                         </div>
@@ -71,7 +77,7 @@
                 </button>
             </div>
         </script>
-        <script id="question-template" type="x-tmpl-mustache">
+        <script id="checkbox-template" type="x-tmpl-mustache">
             <div class="row">
                 <h4>{{question}}?</h4>
             </div>

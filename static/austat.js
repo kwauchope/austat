@@ -1,13 +1,70 @@
-var question = {
-    question: 'How lame is Ben',
-    answers: [
-        {id: 1, answer: 'Not Really'},
-        {id: 2, answer: 'A Bit'},
-        {id: 3, answer: 'Heaps'},
-        {id: 4, answer: 'Lamest Person Ever'},
-        {id: 5, answer: 'Doesnt Know What JSON Is?'}
-    ]
-}
+var questions = [
+    {
+        question: 'How lame is Ben',
+        type: 'CHECKBOX',
+        answers: [
+            {id: 1, answer: 'Not Really'},
+            {id: 2, answer: 'A Bit'},
+            {id: 3, answer: 'Heaps'},
+            {id: 4, answer: 'Lamest Person Ever'},
+            {id: 5, answer: 'Doesnt Know What JSON Is?'}
+        ]
+    },
+    {
+        question: 'Which university does Ben own?',
+        type: 'MAP',
+        answers: [{ 
+            "id": 1, 
+            "geom":{
+                "type": "Feature",
+                "properties": {
+                    "name": "Coors Field",
+                    "amenity": "Baseball Stadium",
+                    "popupContent": "This is where the Rockies play!"
+                },
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [-104.99404, 39.75621]
+                }
+            }
+        },
+        { 
+            "id" : 2, 
+            "geom" : {
+                "type": "Feature",
+                "properties": {
+                    "name": "Coors Field",
+                    "amenity": "Baseball Stadium",
+                    "popupContent": "This is where the Rockies play!"
+                },
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [-102.99404, 39.75621]
+                }
+            }
+        },
+        { 
+            'id' : 3, 
+            'point': {
+                "type": "Feature",
+                "properties": {"party": "Republican"},
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [[
+                        [-104.05, 48.99],
+                        [-97.22,  48.98],
+                        [-96.58,  45.94],
+                        [-104.03, 45.94],
+                        [-104.05, 48.99]
+                    ]]
+                }
+            } 
+        }
+            
+        ]
+    }
+]
+
 
 var answer = {
     answer: {
@@ -19,14 +76,31 @@ var sources = {
    names:['nothing', 'nothing1']
 }
 
+var map = null;
+function get_map(){
+    if( !map ){
+        map = new L.Map('map');
+        // create the tile layer with correct attribution
+        var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+        var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
+        var osm = new L.TileLayer(osmUrl, {minZoom: 3, maxZoom: 12, attribution: osmAttrib});
+        // start the map in Central Australia
+        map.setView(new L.LatLng(-25.518615, 134.264176),3);
+        map.addLayer(osm);
+    }
+    return map;
+}
 $(document).ready(function(){
     $(".button-collapse").sideNav({
         menuWidth: 300
     });
-
     generateTopics();
+    questionSetup();
 
-    var tmpl = $('#question-template').html();
+});
+
+function checkboxSetup(question){
+    var tmpl = $('#checkbox-template').html();
     var html = Mustache.render(tmpl, question);
     $('#question').html(html);
 
@@ -35,7 +109,21 @@ $(document).ready(function(){
         results(selected);
         return false;
     });
-});
+    $('#question').closest('.card').slideDown();
+}
+function mapSetup(question){
+    $('#map').closest('.card').slideDown();
+    addPlacemarks(question);
+}
+function questionSetup(){
+    var question = questions[Math.floor(Math.random()*questions.length)];
+    if(question.type === 'CHECKBOX'){
+        checkboxSetup(question);
+    }
+    else if (question.type === 'MAP'){
+        mapSetup(question);
+    }
+}
 
 function generateTopics(){
     template = $('#topics-template').html();
@@ -59,4 +147,18 @@ function results(selected){
             $('#question').closest('.card').slideDown();
         });
     });
+}
+
+function addPlacemarks(question){
+    map = get_map();
+    //Prototype
+    question.answers.forEach(function(elem){
+        geom = L.geoJson(elem['geom']);
+        geom.on('click',function(evt){
+            //TODO next question
+        })
+        canberra.addTo(map);
+        
+    });
+
 }
