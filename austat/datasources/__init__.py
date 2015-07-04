@@ -1,1 +1,9 @@
-__all__ = ["dummy", "dummywithlocation"]
+__all__ = ["dummy"]
+
+def getsources():
+    sources = []
+    for datasource in __all__:
+        module = __import__("austat.datasources."+datasource, fromlist=[datasource])
+        sources.append(getattr(module, datasource)())
+    return sources
+

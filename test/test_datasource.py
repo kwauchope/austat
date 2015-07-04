@@ -1,22 +1,68 @@
+#generic datasource test
+
 from austat import datasources
-from austat import locations
+from nose.tools import assert_raises
+
+#Only initialise each list once as can be dynamic with URL calls etc
+_globals = {'dslist' : None}
+
+def getsources():
+    if _globals['dslist'] is None:
+        dslist = datasources.getsources()
+    return dslist
 
 def test_getsources():
-    datasources.__all__
+    getsources()
+
+def test_locations():
+    lockeys = set(['id', 'name', 'geometry', 'values'])
+    for source in getsources():
+        locs = source.getlocations()
+        ids = []
+        for location in locs:
+            assert(lockeys.issubset(set(location.keys())))
+            ids.append(location['id'])
+        #ensure ids are unique
+        assert(len(ids) == len(set(ids)))
+
+def test_datasets():
+    datakeys = set(['key', 'question'])
+    for source in getsources():
+       for dataset in source.getdatasets():
+            assert(datakeys.issubset(set(dataset.keys())))
+
+def getlocationids(locs):
+    ids = []
+    for loc in locs:
+        ids.append(loc['id'])
+    return ids
+
+def test_getrandomlocations():
+    for source in getsources():
+        locs = source.getlocations()
+        numlocs = len(locs)
+        #can't see mothod - due to dynamic loading?
+        #assert_raises(Exception, source, getrandomlocations, 0)
+        #assert_raises(Exception, source, getrandomlocations, -1)
+        if numlocs > 1:
+            randomlocs = getlocationids(source.getrandomlocations(numlocs))
+            #ensure get unique locations
+            assert(len(set(randomlocs)) == len(randomlocs))
+            #can't return more than have
+            assert(len(randomlocs) <= numlocs)
+
+def test_getstat():
+    for datasource in getsources():
+        numlocs = len(datasource.getlocations())
+        datasets = datasource.getdatasets()
+        if numlocs > 1:
+            for i in range(0, len(datasets)):
+                res = datasource.getstat(i,numlocations)
+                assert(res['question'] is not None)
+                assert(res['locations'] is not None)
 
 def test_getrandomstat():
-    statkeys = set(['locationid', 'name', 'value'])
-    for datasource in datasources.__all__:
-        module = __import__("austat.datasources."+datasource, fromlist=[datasource])
-        ds = getattr(module, datasource)()
-        #select number of locations based on length of whats available
-        numlocations = len(locations.getlocations())
-        #numalternates = locations.getlocations
-        res = ds.getrandomstat(numlocations)
-        assert(res['actual'] is not None)
-        assert(res['alternatives'] is not None)
-        assert(len(res['alternatives']) == numlocations - 1)
-        assert(statkeys.issubset(set(res['actual'].keys())))
-        for alternate in res['alternatives']:
-            assert(statkeys.issubset(set(alternate.keys())))
-
+    for datasource in getsources():
+        numlocs = len(datasource.getlocations())
+        if numlocs > 1:
+            assert(len(datasource.getrandomstat(numlocs-1)) <= numlocs -1)
