@@ -29,7 +29,7 @@ def test_locations():
 def test_datasets():
     datakeys = set(['key', 'question'])
     for source in getsources():
-       for dataset in source.getdatasets():
+        for dataset in source.getdatasets():
             assert(datakeys.issubset(set(dataset.keys())))
 
 def getlocationids(locs):
@@ -47,7 +47,7 @@ def test_getrandomlocations():
         #assert_raises(Exception, source, getrandomlocations, -1)
         if numlocs > 1:
             datasets = source.getdatasets()
-            for i in range(0,len(datasets)):
+            for i in range(0, len(datasets)):
                 randomlocs = getlocationids(source.getrandomlocations(i, numlocs))
                 #ensure get unique locations
                 assert(len(set(randomlocs)) == len(randomlocs))
@@ -60,7 +60,7 @@ def test_getstat():
         datasets = source.getdatasets()
         if numlocs > 1:
             for i in range(0, len(datasets)):
-                res = source.getstat(i,numlocs)
+                res = source.getstat(i, numlocs)
                 assert(res['question'] is not None)
                 assert(res['locations'] is not None)
 
