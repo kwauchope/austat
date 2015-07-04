@@ -24,11 +24,13 @@
         <div class="row">
             <div class="container">
                 <div class="col l12 m12 s12">
-                    <div class="card-panel">
+                    <div class="card">
                         <div class="card-content">
                             <div id="question"></div>
                         </div>
-                        <div class="card-reveal">
+                    </div>
+                    <div class="card" style="display:None">
+                        <div class="card-content">
                             <div id="answer"></div>
                         </div>
                     </div>
@@ -81,11 +83,6 @@
                         <label for="answer_{{id}}">{{answer}}</label>
                     </p>
                     {{/answers}}
-                </div>
-                <div class="row">
-                    <button class="btn-large waves-effect waves-light activator" type="submit">
-                        Answer
-                    </button>
                 </div>
             </form>
         </script>
