@@ -9,12 +9,14 @@ var map = null;
 function get_map(){
     if( !map ){
         map = new L.Map('map');
+        console.log(map)
         // create the tile layer with correct attribution
         var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
         var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
-        var osm = new L.TileLayer(osmUrl, {minZoom: 3, maxZoom: 12, attribution: osmAttrib});
+        var osm = new L.TileLayer(osmUrl, {minZoom: 0, maxZoom: 12, attribution: osmAttrib});
         // start the map in Central Australia
-        map.setView(new L.LatLng(-25.518615, 134.264176),3);
+        map.setView(new L.LatLng(-24.967335, 134.625094),4);
+        map.panTo(new L.LatLng(-24.967335, 134.625094));
         map.addLayer(osm);
     }
     return map;
@@ -43,24 +45,28 @@ function checkboxQuestion(question){
 function mapSetup(question){
     $('#map').closest('.card').slideDown();
     addPlacemarks(question);
-}
-function fixQuestion(q){
-    console.log(q);
-    return q.replace(/{/g, '{{').replace(/}/g, '}}');
+
 }
 function makeQuestion(){
     var topic = getRandomTopic();
-    $.ajax({
-        url: '/query/' + topic,
-        success: function(q){
-            q.question = fixQuestion(q.question);
-            q.question = Mustache.render(q.question, getRandomItem(q.locations))
-            checkboxQuestion(q);
-            //var template = $('#topics-template').html();
-            //var html = Mustache.render(template, topics);
-            //$('#topics').html(html)
-        }
-    });
+        $.ajax({
+            url: '/query/' + topic,
+            success: function(q){
+                console.log(!q['value'])
+                    q.question = Mustache.render(q.question, getRandomItem(q.locations))
+                    if(q.locations){
+                        addPlacemarks(q)
+                    }else{
+                        checkboxQuestion(q);
+                    }
+
+
+
+                //var template = $('#topics-template').html();
+                //var html = Mustache.render(template, topics);
+                //$('#topics').html(html)
+            }
+        });
     //var question = questions[Math.floor(Math.random()*questions.length)];
     //if(question.type === 'CHECKBOX'){
     //    checkboxSetup(question);
@@ -126,13 +132,20 @@ function results(selected){
 function addPlacemarks(question){
     map = get_map();
     //Prototype
-    question.answers.forEach(function(elem){
-        geom = L.geoJson(elem['geom']);
+    console.log(question)
+    var tmpl = $('#question-template').html();
+    var html = Mustache.render(tmpl, question);
+    $('#mapQuestion').html(html);
+    $('#question').closest('.card').prev().slideDown();
+    question.locations.forEach(function(elem){
+        console.log(elem)
+        geom = L.geoJson(elem.geometry);
         geom.on('click',function(evt){
-            //TODO next question
+            //TODO call result on geom val
         })
-        canberra.addTo(map);
-        
+        // TODO on hover display labels
+        geom.addTo(map);
+
     });
 
 }

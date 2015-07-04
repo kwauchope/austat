@@ -27,7 +27,8 @@
             <div class="container">
                 <div class="col l12 m12 s12">
                     <div class="card" style="display:None">
-                        <span class="text-darken-2 center-align"><h3>What area is grant the lamest in?</h3></span>
+                        <span class="text-darken-2 center-align">
+                            <h3 id="mapQuestion"></h3></span>
                         <div id="map"></div>
                     </div>
                     <div class="card" style="display:None">
@@ -43,7 +44,9 @@
                 </div>
             </div>
         </div>
-
+        <script id="question-template" type="x-tmpl-mustashe">
+            {{question}}
+        </script>
         <script id="topics-template" type="x-tmpl-mustache">
             {{#.}}
             <li>
