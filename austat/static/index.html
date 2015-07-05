@@ -8,7 +8,7 @@
         <script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
         <script src="austat.js"></script>
         <link rel="stylesheet" href="map.css">
-
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     </head>
     <body>
         <nav>
@@ -68,11 +68,14 @@
         <script id="answer-template" type="x-tmpl-mustache">
             <div class="row">
                 {{#correct}}
-                    <div>CORRECT!</div>
+                    <i class="fa fa-check fa-5x green-text"></i>
                 {{/correct}}
                 {{^correct}}
-                    <div>WRONG!</div>
+                    <i class="fa fa-times fa-5x red-text"></i>
                 {{/correct}}
+            </div>
+            <div class="row">
+               <h4><strong>{{answer}}</strong> is the correct answer.</h4>
             </div>
             <div class="row">
                 {{details}}

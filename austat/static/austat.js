@@ -5,6 +5,7 @@ $(document).ready(function(){
     var austat = new Austat();
 
 });
+
 function Austat(){
     this.map = null;
     this.layers = [];
@@ -12,6 +13,7 @@ function Austat(){
     this.makeTopics();
     this.makeQuestion();
 }
+
 Austat.prototype.get_map = function(){
     if( !this.map ){
         this.map = new L.Map('map');
@@ -56,7 +58,7 @@ Austat.prototype.makeQuestion = function(){
         success: function(q){
             var l = austat.getRandomItem(q.locations);
             q.question = Mustache.render(q.question, l)
-            austat.answer = l.value;
+            austat.answer = {value: l.value, name: l.name};
             if(l.geometry){
                 austat.addPlacemarks(q)
             }else{
@@ -101,15 +103,14 @@ Austat.prototype.makeTopics = function(){
 
 Austat.prototype.results = function(selected){
     var austat = this;
+    var correct = (austat.answer.value === selected);
+
     $('.question').closest('.card').slideUp(function(){
         $('#answer').closest('.card').slideDown();
     });
-    var correct = false;
-    if (austat.answer === selected){
-        correct = true;
-    }
+
     var tmpl = $('#answer-template').html();
-    var html = Mustache.render(tmpl, {correct: correct, details: 'Some Details'});
+    var html = Mustache.render(tmpl, {correct: correct, answer: austat.answer.name, details: '<details>'});
     $('#answer').html(html);
     $('#answer #next').click(function(){
         $(this).closest('.card').slideUp(function(){
