@@ -1,6 +1,6 @@
 from os import path
 
-from bottle import static_file
+from bottle import static_file, redirect
 import bottle
 
 
@@ -9,6 +9,11 @@ STATIC_PATH = path.join(BASE_DIR, '../', 'static')
 
 
 staticApp = bottle.Bottle()
+
+
+@staticApp.route('/')
+def go_index():
+    redirect('static/index.html')
 
 
 @staticApp.route('/static/<filename>')
