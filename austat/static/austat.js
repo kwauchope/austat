@@ -53,12 +53,25 @@ Austat.prototype.makeQuestion = function(){
     var austat = this;
     austat.answer = null;
     var topic = this.getRandomTopic();
+    if(!topic){
+        $('#notopic').slideDown();
+        $('#enabletopic').click(function(e){
+            $('#notopic').slideUp(function(){
+                austat.makeQuestion();
+            });
+        });
+        return;
+    }
     $.ajax({
         url: '/query/' + topic,
         success: function(q){
             var l = austat.getRandomItem(q.locations);
             q.question = Mustache.render(q.question, l)
-            austat.answer = {value: l.value, name: l.name};
+            var details = null;
+            if (l.link) {
+                details = l.link;
+            }
+            austat.answer = {value: l.value, name: l.name, details: details};
             if(l.geometry){
                 austat.addPlacemarks(q)
             }else{
@@ -110,7 +123,7 @@ Austat.prototype.results = function(selected){
     });
 
     var tmpl = $('#answer-template').html();
-    var html = Mustache.render(tmpl, {correct: correct, answer: austat.answer.name, details: '<details>'});
+    var html = Mustache.render(tmpl, {correct: correct, answer: austat.answer.name, details: austat.answer.details});
     $('#answer').html(html);
     $('#answer #next').click(function(){
         $(this).closest('.card').slideUp(function(){

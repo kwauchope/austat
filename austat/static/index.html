@@ -27,6 +27,16 @@
         <div class="row">
             <div class="container">
                 <div class="col l12 m12 s12">
+                    <div class="card" id="notopic" style="display:None">
+                        <div class="card-content">
+                            <span class="text-darken-2 center-align">
+                                <h3>Please enable a topic from the sidebar.</h3>
+                            </span>
+                            <button class="btn-large waves-effect waves-light" id="enabletopic">
+                                OK
+                            </button>
+                        </div>
+                    </div>
                     <div class="card" style="display:None">
                         <div class="question"></div>
                         <div class="questioncontent" id="map"></div>
@@ -75,9 +85,11 @@
                 {{/correct}}
                 <h4><strong>{{answer}}</strong> is the correct answer.</h4>
             </div>
+            {{#details}}
             <div class="row">
-                {{details}}
+                <a href="{{details}}">See more details for <strong>{{answer}}</strong></a>
             </div>
+            {{/details}}
             <div class="row">
                 <button class="btn-large waves-effect waves-light" id="next">
                     Next Question.
