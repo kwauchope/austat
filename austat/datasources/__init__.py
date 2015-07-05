@@ -12,7 +12,9 @@ def getsources():
                 module = _import("austat.datasources.", datasource, [datasource])
             except ImportError:
                 module = _import("datasources.", datasource, [datasource])
-            _SOURCES.append(getattr(module, datasource)())
+            source = getattr(module, datasource)()
+            if len(source.getdatasets()) > 0:
+                _SOURCES.append(getattr(module, datasource)())
     return _SOURCES
 
 

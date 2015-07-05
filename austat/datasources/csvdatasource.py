@@ -14,7 +14,7 @@ class csvdatasource(datasource):
         csvlocation = "data/"
         questionfile = open(os.path.join(csvlocation, 'Questions.csv'), 'rb')
         factfile = open(os.path.join(csvlocation, 'Facts.csv'), 'rb')
-        placesfile = open(os.path.join(csvlocation,'Places.csv'), 'rb')
+        placesfile = open(os.path.join(csvlocation, 'Places.csv'), 'rb')
         questionreader = csv.DictReader(questionfile, delimiter=',')
         factreader = csv.DictReader(factfile, delimiter=',')
         placesreader = csv.DictReader(placesfile, delimiter=',')
@@ -23,11 +23,10 @@ class csvdatasource(datasource):
             if row['CategoryDescription'] == category:
                 self.datasets.append({"key" : row['FactKey'], "question" : row ['Question']})
                 keys.append(row['FactKey'])
-        i = 0
-        #currently useing name as id :/
+        #currently using name as id :/
         locs = []
-        for row in placesreader:
-            self.locations.append({"id" : i, "name" : row['Location'], "geometry" : { "type" : "Point", "coordinates" : [row['Lon'], row['Lat']]}, "values" : {} })
+        for (i,row) in enumerate(placesreader):
+            self.locations.append({"id" : i, "name" : row['Location'], "geometry" : {"type" : "Point", "coordinates" : [row['Lon'], row['Lat']]}, "values" : {} })
             locs.append(row['Location'])
             i = i+1
         for row in factreader:
@@ -37,4 +36,6 @@ class csvdatasource(datasource):
                     if loc['name'] == row['Location']:
                         loc['values'][row['Key']] = row['Value']
                         break
+        self.cleanemptylocations()
+        self.cleanemptydatasets()
 
