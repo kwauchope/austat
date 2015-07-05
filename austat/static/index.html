@@ -8,7 +8,7 @@
         <script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
         <script src="austat.js"></script>
         <link rel="stylesheet" href="map.css">
-
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     </head>
     <body>
         <nav>
@@ -28,13 +28,13 @@
             <div class="container">
                 <div class="col l12 m12 s12">
                     <div class="card" style="display:None">
-                        <span class="text-darken-2 center-align">
-                            <h3 id="mapQuestion"></h3></span>
-                        <div id="map"></div>
+                        <div class="question"></div>
+                        <div class="questioncontent" id="map"></div>
                     </div>
                     <div class="card" style="display:None">
                         <div class="card-content">
-                            <div id="question"></div>
+                            <div class="question"></div>
+                            <div class="questioncontent" id="checkboxes"></div>
                         </div>
                     </div>
                     <div class="card" style="display:None">
@@ -46,7 +46,9 @@
             </div>
         </div>
         <script id="question-template" type="x-tmpl-mustashe">
-            {{question}}
+            <span class="text-darken-2 center-align">
+                <h3>{{question}}</h3>
+            </span>
         </script>
         <script id="topics-template" type="x-tmpl-mustache">
             {{#.}}
@@ -65,15 +67,18 @@
         </script>
         <script id="answer-template" type="x-tmpl-mustache">
             <div class="row">
-                {{#answer.correct}}
-                    <div>CORRECT!</div>
-                {{/answer.correct}}
-                {{^answer.correct}}
-                    <div>WRONG!</div>
-                {{/answer.correct}}
+                {{#correct}}
+                    <i class="fa fa-check fa-5x green-text"></i>
+                {{/correct}}
+                {{^correct}}
+                    <i class="fa fa-times fa-5x red-text"></i>
+                {{/correct}}
             </div>
             <div class="row">
-                {{answer.details}}
+               <h4><strong>{{answer}}</strong> is the correct answer.</h4>
+            </div>
+            <div class="row">
+                {{details}}
             </div>
             <div class="row">
                 <button class="btn-large waves-effect waves-light" id="next">
@@ -82,9 +87,6 @@
             </div>
         </script>
         <script id="checkbox-template" type="x-tmpl-mustache">
-            <div class="row">
-                <h4>{{question}}</h4>
-            </div>
             <form>
                 <div class="row">
                     {{#locations}}
