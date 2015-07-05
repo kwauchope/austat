@@ -30,11 +30,11 @@
                     <div class="card" style="display:None">
                         <span class="text-darken-2 center-align">
                             <h3 id="mapQuestion"></h3></span>
-                        <div id="map"></div>
+                        <div class="question" id="map"></div>
                     </div>
                     <div class="card" style="display:None">
                         <div class="card-content">
-                            <div id="question"></div>
+                            <div class="question" id="checkboxes"></div>
                         </div>
                     </div>
                     <div class="card" style="display:None">
@@ -65,15 +65,15 @@
         </script>
         <script id="answer-template" type="x-tmpl-mustache">
             <div class="row">
-                {{#answer.correct}}
+                {{#correct}}
                     <div>CORRECT!</div>
-                {{/answer.correct}}
-                {{^answer.correct}}
+                {{/correct}}
+                {{^correct}}
                     <div>WRONG!</div>
-                {{/answer.correct}}
+                {{/correct}}
             </div>
             <div class="row">
-                {{answer.details}}
+                {{details}}
             </div>
             <div class="row">
                 <button class="btn-large waves-effect waves-light" id="next">

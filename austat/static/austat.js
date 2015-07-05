@@ -8,6 +8,7 @@ $(document).ready(function(){
 function Austat(){
     this.map = null;
     this.layer = null;
+    this.answer = null;
     this.makeTopics();
     this.makeQuestion();
 }
@@ -30,16 +31,16 @@ Austat.prototype.get_map = function(){
 }
 
 Austat.prototype.checkboxQuestion = function(question){
+    var austat = this
     var tmpl = $('#checkbox-template').html();
     var html = Mustache.render(tmpl, question);
-    $('#question').html(html);
-    var mapObj = this
-    $('#question input[type=radio]').click(function(){
+    $('#checkboxes').html(html);
+    $('#checkboxes input[type=radio]').click(function(){
         var selected = $(this).attr('id');
-        mapObj.results(selected);
+        austat.results(selected);
         return false;
     });
-    $('#question').closest('.card').slideDown();
+    $('#checkboxes').closest('.card').slideDown();
 }
 Austat.prototype.mapSetup = function(question){
     $('#map').closest('.card').slideDown();
@@ -47,6 +48,7 @@ Austat.prototype.mapSetup = function(question){
 }
 Austat.prototype.makeQuestion = function(){
     var austat = this;
+    austat.answer = null;
     var topic = this.getRandomTopic();
     $.ajax({
         url: '/query/' + topic,
@@ -54,6 +56,7 @@ Austat.prototype.makeQuestion = function(){
             console.log(!q['value'])
                 var l = austat.getRandomItem(q.locations);
                 q.question = Mustache.render(q.question, l)
+                austat.answer = l.value;
                 if(l.geometry){
                     austat.addPlacemarks(q)
                 }else{
@@ -97,35 +100,37 @@ Austat.prototype.makeTopics = function(){
 }
 
 Austat.prototype.results = function(selected){
-    $('#question').closest('.card').slideUp(function(){
+    var austat = this;
+    $('.question').closest('.card').slideUp(function(){
         $('#answer').closest('.card').slideDown();
     });
-    var mapObj = this;
-    //answer.answer.correct = false;
-    //if ('answer_' + answer.answer.id === selected){
-    //    answer.answer.correct = true;
-    //}
+    var correct = false;
+    console.log(austat.answer);
+    console.log(selected);
+    if (austat.answer === selected){
+        correct = true;
+    }
     var tmpl = $('#answer-template').html();
-    var html = Mustache.render(tmpl, answer);
+    var html = Mustache.render(tmpl, {correct: correct, details: 'Some Details'});
     $('#answer').html(html);
     $('#answer #next').click(function(){
-        mapObj.makeQuestion()
         $(this).closest('.card').slideUp(function(){
-            $('#question').closest('.card').slideDown();
+            austat.makeQuestion()
+            //$('#question').closest('.card').slideDown();
         });
     });
 }
 
 Austat.prototype.addPlacemarks = function(question){
-    map = this.get_map();
+    var austat = this;
+    var map = this.get_map();
     var tmpl = $('#question-template').html();
     var html = Mustache.render(tmpl, question);
     $('#mapQuestion').html(html);
-    $('#question').closest('.card').prev().slideDown();
+    $('#map').closest('.card').slideDown();
     if (this.layer){
         this.map.removeLayer(this.layer);
     }
-    var mapObj = this
     question.locations.forEach(function(elem){
         geom = L.geoJson(elem.geometry);
         geom.bindPopup(elem.name);
@@ -136,8 +141,7 @@ Austat.prototype.addPlacemarks = function(question){
             e.layer.closePopup();
         });
         geom.on('click', function(e) {
-            mapObj.results(geom.value)
-            $('#map').closest('.card').slideUp();
+            austat.results(elem.value)
         });
         geom.openPopup();
         geom.addTo(map);
