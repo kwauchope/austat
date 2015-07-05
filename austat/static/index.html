@@ -4,6 +4,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.1.2/mustache.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/js/materialize.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/css/materialize.min.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
         <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
         <script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
@@ -19,22 +20,46 @@
                         <ul id="topics">
                 </div>
             </div>
-            <div class="nav-wrapper blue-grey">
-                <a href="#" class="brand-logo">AUSTAT</a>
+            <div class="nav-wrapper grey darken-1">
+                <a href="#" class="brand-logo center" style="padding-left:20px;"><img src="/static/logo.png" alt="AUSTAT" style="height:64px;"></img></a>
+                <ul class="right">
+                    <li>
+                        <a class="modal-trigger" href="#modal1"><i class="material-icons">equalizer</i></a>
+                    </li>
+                </ul>
             </div>
         </nav>
                
         <div class="row">
             <div class="container">
                 <div class="col l12 m12 s12">
+                    <div class="card-panel" id="welcome">
+                        <div class="center-align">
+                            <a href="#" class="grey-text right"><i class="material-icons">done</i></a>
+                                <strong>How well do you know Australia?</strong><br/>
+                                10 questions will be generated just for you.
+                                You need to guess the correct location from the options on the map.<br/>
+                                Share your result with your friends or try again with a different set of questions.
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="progress">
+                            <div class="determinate left col m9" style="width: 10%"></div>
+                        </div>
+                    </div>
                     <div class="card" id="notopic" style="display:None">
                         <div class="card-content">
                             <span class="text-darken-2 center-align">
-                                <h3>Please enable a topic from the sidebar.</h3>
+                                <h4>Please enable a topic from the sidebar.</h4>
                             </span>
                             <button class="btn-large waves-effect waves-light" id="enabletopic">
                                 OK
                             </button>
+                        </div>
+                    </div>
+                    <div class="card" style="display:None">
+                        <div class="card-content">
+                            <div id="answer"></div>
                         </div>
                     </div>
                     <div class="card" style="display:None">
@@ -47,17 +72,32 @@
                             <div class="questioncontent" id="checkboxes"></div>
                         </div>
                     </div>
-                    <div class="card" style="display:None">
-                        <div class="card-content">
-                            <div id="answer"></div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
+
+        <!-- Score Modal -->
+        <div id="modal1" class="modal bottom-sheet">
+          <div class="modal-content">
+            <div class="row">
+                <div class="col s4">
+                    <div class="center-align"><i class="fa fa-star fa-5x amber-text"></i></div>
+                </div>
+                <div class="col s4">
+                    <div class="center-align"><div class="fa fa-5x green-text">%</div></div>
+                </div>
+                <div class="col s4">
+                    <div class="center-align"><i class="fa fa-trophy fa-5x amber-text"></i></div>
+                </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+
         <script id="question-template" type="x-tmpl-mustashe">
             <span class="text-darken-2 center-align">
-                <h3>{{question}}</h3>
+                <h4>{{question}}</h4>
             </span>
         </script>
         <script id="topics-template" type="x-tmpl-mustache">

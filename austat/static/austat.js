@@ -2,14 +2,22 @@ $(document).ready(function(){
     $(".button-collapse").sideNav({
         menuWidth: 300
     });
-    var austat = new Austat();
 
+    $(".modal-trigger").leanModal();
+
+    $("#welcome.card-panel i").click(function(){
+        $(this).closest('.card-panel').slideUp();
+    });
+
+    var austat = new Austat();
 });
 
 function Austat(){
     this.map = null;
     this.layers = [];
     this.answer = null;
+    this.question_num = 1;
+    this.question_max = 10;
     this.makeTopics();
     this.makeQuestion();
 }
@@ -117,21 +125,33 @@ Austat.prototype.makeTopics = function(){
 Austat.prototype.results = function(selected){
     var austat = this;
     var correct = (austat.answer.value === selected);
-
-    $('.question').closest('.card').slideUp(function(){
-        $('#answer').closest('.card').slideDown();
+    $.ajax({
+        'url': '/leaderboard?success='+correct,
+        'type': 'POST',
+        'data': {success:correct}
     });
+    $('#answer').closest('.card').slideDown();
 
     var tmpl = $('#answer-template').html();
     var html = Mustache.render(tmpl, {correct: correct, answer: austat.answer.name, details: austat.answer.details});
     $('#answer').html(html);
     $('#answer #next').click(function(){
         $(this).closest('.card').slideUp(function(){
-            austat.makeQuestion()
+            austat.question_num += 1;
+            $('.progress .determinate').css('width', (austat.question_num * 10) + '%');
+            if(austat.question_num < 10){
+                austat.makeQuestion()
+            }else{
+                austat.gameFinished();
+            }
         });
     });
 }
 
+Austat.prototype.gameFinished = function(){
+    alert('GET REKT');
+    this.question_num = 1;
+}
 Austat.prototype.addPlacemarks = function(question){
     var austat = this;
     var map = this.get_map();
@@ -154,6 +174,9 @@ Austat.prototype.addPlacemarks = function(question){
             e.layer.closePopup();
         });
         layer.on('click', function(e) {
+            austat.layers.forEach(function(l){
+                l.off('click');
+            });
             austat.results(elem.value)
         });
         layer.openPopup();
