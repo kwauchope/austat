@@ -16,6 +16,8 @@ function Austat(){
     this.map = null;
     this.layers = [];
     this.answer = null;
+    this.question_num = 1;
+    this.question_max = 10;
     this.makeTopics();
     this.makeQuestion();
 }
@@ -32,9 +34,9 @@ Austat.prototype.get_map = function(){
         var osm = new L.TileLayer(osmUrll, {minZoom: 0, maxZoom: 12, attribution: osmAttrib});
         
         // start the map in Central Australia
-        this.map.setView(new L.LatLng(-24.967335, 134.625094),4);
         this.map.addLayer(osm);
     }
+    this.map.setView(new L.LatLng(-27.967335, 134.625094), 4);
     return this.map;
 }
 
@@ -59,12 +61,25 @@ Austat.prototype.makeQuestion = function(){
     var austat = this;
     austat.answer = null;
     var topic = this.getRandomTopic();
+    if(!topic){
+        $('#notopic').slideDown();
+        $('#enabletopic').click(function(e){
+            $('#notopic').slideUp(function(){
+                austat.makeQuestion();
+            });
+        });
+        return;
+    }
     $.ajax({
         url: '/query/' + topic,
         success: function(q){
             var l = austat.getRandomItem(q.locations);
             q.question = Mustache.render(q.question, l)
-            austat.answer = {value: l.value, name: l.name};
+            var details = null;
+            if (q.link) {
+                details = q.link;
+            }
+            austat.answer = {value: l.value, name: l.name, details: details};
             if(l.geometry){
                 austat.addPlacemarks(q)
             }else{
@@ -110,21 +125,35 @@ Austat.prototype.makeTopics = function(){
 Austat.prototype.results = function(selected){
     var austat = this;
     var correct = (austat.answer.value === selected);
-
+    $.ajax({
+        'url': '/leaderboard',
+        'type': 'POST',
+        'data': {success:correct}
+    });
     $('.question').closest('.card').slideUp(function(){
         $('#answer').closest('.card').slideDown();
     });
 
     var tmpl = $('#answer-template').html();
-    var html = Mustache.render(tmpl, {correct: correct, answer: austat.answer.name, details: '<details>'});
+    var html = Mustache.render(tmpl, {correct: correct, answer: austat.answer.name, details: austat.answer.details});
     $('#answer').html(html);
     $('#answer #next').click(function(){
         $(this).closest('.card').slideUp(function(){
-            austat.makeQuestion()
+            austat.question_num += 1;
+            $('.progress .determinate').css('width', (austat.question_num * 10) + '%');
+            if(austat.question_num < 10){
+                austat.makeQuestion()
+            }else{
+                austat.gameFinished();
+            }
         });
     });
 }
 
+Austat.prototype.gameFinished = function(){
+    alert('GET REKT');
+    this.question_num = 1;
+}
 Austat.prototype.addPlacemarks = function(question){
     var austat = this;
     var map = this.get_map();

@@ -7,9 +7,9 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
         <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
         <script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
-        <script src="austat.js"></script>
-        <link rel="stylesheet" href="map.css">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <script src="austat.js"></script>
+        <link rel="stylesheet" href="austat.css">
     </head>
     <body>
         <nav>
@@ -40,6 +40,21 @@
                                 10 questions will be generated just for you.
                                 You need to guess the correct location from the options on the map.<br/>
                                 Share your result with your friends or try again with a different set of questions.
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="progress">
+                            <div class="determinate left col m9" style="width: 10%"></div>
+                        </div>
+                    </div>
+                    <div class="card" id="notopic" style="display:None">
+                        <div class="card-content">
+                            <span class="text-darken-2 center-align">
+                                <h3>Please enable a topic from the sidebar.</h3>
+                            </span>
+                            <button class="btn-large waves-effect waves-light" id="enabletopic">
+                                OK
+                            </button>
                         </div>
                     </div>
                     <div class="card" style="display:None">
@@ -108,13 +123,13 @@
                 {{^correct}}
                     <i class="fa fa-times fa-5x red-text"></i>
                 {{/correct}}
+                <h4><strong>{{answer}}</strong> is the correct answer.</h4>
             </div>
+            {{#details}}
             <div class="row">
-               <h4><strong>{{answer}}</strong> is the correct answer.</h4>
+                <a href="{{details}}">Visit the dataset.</a>
             </div>
-            <div class="row">
-                {{details}}
-            </div>
+            {{/details}}
             <div class="row">
                 <button class="btn-large waves-effect waves-light" id="next">
                     Next Question.
