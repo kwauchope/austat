@@ -2,6 +2,9 @@ from datasource import datasource
 import csv
 import os
 
+import sys
+import json
+
 class csvdatasource(datasource):
 
     #csvlocation = None
@@ -27,18 +30,13 @@ class csvdatasource(datasource):
                 self.datasets.append(dataset)
                 keys.append(row['FactKey'])
         #currently using name as id :/
-        locs = []
         for (i,row) in enumerate(placesreader):
-            self.locations.append({"id" : i, "name" : row['Location'], "geometry" : {"type" : "Point", "coordinates" : [row['Lon'], row['Lat']]}, "values" : {} })
-            locs.append(row['Location'])
-            i = i+1
+            self.locations[row['Location']] = {"id" : i, "name" : row['Location'], "geometry" : {"type" : "Point", "coordinates" : [row['Lon'], row['Lat']]}, "values" : {} }
         for row in factreader:
-            if row['Key'] in keys and row['Location'] in locs:
-                #have to loop due to data layout
-                for loc in self.locations:
-                    if loc['name'] == row['Location']:
-                        loc['values'][row['Key']] = row['Value']
-                        break
+            if row['Key'] in keys and row['Location'] in self.locations:
+                self.locations[row['Location']]['values'][row['Key']] = row['Value']
         self.cleanemptylocations()
         self.cleanemptydatasets()
+        #sys.stderr.write(json.dumps(self.locations))
+        #sys.stderr.write(json.dumps(self.datasets))
 
