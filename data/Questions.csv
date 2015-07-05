@@ -5,8 +5,7 @@ Where is the average income {{value}}?,AverageIncome,TODO,http://data.gov.au/dat
 Where is the median house price {{value}} times the median income?,MedianHousePriceToIncome,TODO,,
 Where is {{value}} the most commonly spoken language other than English,,TODO,,
 What place is this? {{show 4 sattelite images}},,TODO,,
-"Where did the poplulation change by {{value}} between 2006-07 and 2013-14?
-",,TODO,"Regional Internal Migration Estimates by Region (SA3 and above), Age and Sex, 2006-07 to 2013-14",
+"Where did the poplulation change by {{value}} between 2006-07 and 2013-14?",,TODO,"Regional Internal Migration Estimates by Region (SA3 and above), Age and Sex, 2006-07 to 2013-14",
 In which state is the total 2015 births {{value}}?,Births2015,Demographics,http://stat.abs.gov.au//Index.aspx?DataSetCode=ERP_QUARTERLY#,
 In which state is the total 2015 deaths {{value}}?,Deaths2015,Demographics,,
 In which state is the estimated 2015 populations {{value}}?,Estimated2015Pop,Demographics,,
