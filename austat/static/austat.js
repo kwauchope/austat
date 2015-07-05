@@ -2,8 +2,14 @@ $(document).ready(function(){
     $(".button-collapse").sideNav({
         menuWidth: 300
     });
-    var austat = new Austat();
 
+    $(".modal-trigger").leanModal();
+
+    $("#welcome.card-panel i").click(function(){
+        $(this).closest('.card-panel').slideUp();
+    });
+
+    var austat = new Austat();
 });
 
 function Austat(){
