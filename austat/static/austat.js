@@ -130,9 +130,7 @@ Austat.prototype.results = function(selected){
         'type': 'POST',
         'data': {success:correct}
     });
-    $('.question').closest('.card').slideUp(function(){
-        $('#answer').closest('.card').slideDown();
-    });
+    $('#answer').closest('.card').slideDown();
 
     var tmpl = $('#answer-template').html();
     var html = Mustache.render(tmpl, {correct: correct, answer: austat.answer.name, details: austat.answer.details});
