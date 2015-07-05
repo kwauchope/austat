@@ -126,7 +126,7 @@ Austat.prototype.results = function(selected){
     var austat = this;
     var correct = (austat.answer.value === selected);
     $.ajax({
-        'url': '/leaderboard',
+        'url': '/leaderboard?success='+correct,
         'type': 'POST',
         'data': {success:correct}
     });
