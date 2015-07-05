@@ -193,6 +193,9 @@ Austat.prototype.addPlacemarks = function(question){
             e.layer.closePopup();
         });
         layer.on('click', function(e) {
+            austat.layers.forEach(function(l){
+                l.off('click');
+            });
             austat.results(elem.value)
         });
         layer.openPopup();

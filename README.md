@@ -6,7 +6,7 @@ The idea of the project is a fun competitive way to test your knowledge and educ
 The aim is to get a top score that you can share and compare with your friends.
 The intention is that statistics on corect and incorrect results could be kept for them used for research purposes. Public perception reseach could also be commissioned. 
 
-This project started as a [GovHack](https://www.govhack.org/) 2015 entry 
+This project started as a [GovHack](https://www.govhack.org/) 2015 entry, a working copy is available [here](http://austat.gordcorp.com:8080/)
 
 ##Enhancement Ideas
 
