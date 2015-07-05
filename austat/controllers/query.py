@@ -20,4 +20,5 @@ def get_qn(iden):
 
     src = srcs[iden]
     response.content_type = 'application/json'
-    return json.dumps(src.getrandomstat(6))
+    #hard coded 'difficulty' for now
+    return json.dumps(src.getrandomstat(4))
