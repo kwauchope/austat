@@ -11,12 +11,12 @@ function get_map(){
         map = new L.Map('map');
         console.log(map)
         // create the tile layer with correct attribution
-        var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+        var osmUrll = 'http://otile2.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png'
+        //var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
         var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
-        var osm = new L.TileLayer(osmUrl, {minZoom: 0, maxZoom: 12, attribution: osmAttrib});
+        var osm = new L.TileLayer(osmUrll, {minZoom: 0, maxZoom: 12, attribution: osmAttrib});
         // start the map in Central Australia
         map.setView(new L.LatLng(-24.967335, 134.625094),4);
-        map.panTo(new L.LatLng(-24.967335, 134.625094));
         map.addLayer(osm);
     }
     return map;
@@ -138,13 +138,21 @@ function addPlacemarks(question){
     $('#mapQuestion').html(html);
     $('#question').closest('.card').prev().slideDown();
     question.locations.forEach(function(elem){
-        console.log(elem)
         geom = L.geoJson(elem.geometry);
         geom.on('click',function(evt){
             //TODO call result on geom val
         })
-        // TODO on hover display labels
+         // TODO on hover display labels
+        geom.bindPopup(elem.value);
+        geom.on('mouseover', function(e) {
+            e.layer.openPopup();
+        });
+        geom.on('mouseout', function(e) {
+            e.layer.closePopup();
+        });
+        geom.openPopup();
         geom.addTo(map);
+        map.invalidateSize()
 
     });
 
