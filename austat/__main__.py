@@ -39,4 +39,4 @@ def main(hostname='0.0.0.0', port=8080, dev=True, debug=True):
     debug: Log requests
     """
     app = create_app()
-    app.run(host=hostname, port=port, debug=debug, reloader=dev)
+    app.run(host=hostname, port=port, debug=debug, reloader=dev, server="gevent")
