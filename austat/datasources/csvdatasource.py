@@ -21,7 +21,10 @@ class csvdatasource(datasource):
         keys = []
         for row in questionreader:
             if row['CategoryDescription'] == category:
-                self.datasets.append({"key" : row['FactKey'], "question" : row ['Question']})
+                dataset = {"key" : row['FactKey'], "question" : row ['Question']}
+                if 'FactSource' in row:
+                    dataset['link'] = row['FactSource']
+                self.datasets.append(dataset)
                 keys.append(row['FactKey'])
         #currently using name as id :/
         locs = []

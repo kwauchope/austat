@@ -59,5 +59,8 @@ class datasource(object):
                                 "value": loc['values'][key],
                                 "geometry": loc['geometry'],
                                })
-        return {'question': self.datasets[datasetid]['question'],
+        response = {'question': self.datasets[datasetid]['question'],
                 "locations": results}
+        if 'link' in self.datasets[datasetid]:
+            response['link'] = self.datasets[datasetid]
+        return response
