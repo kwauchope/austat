@@ -10,13 +10,13 @@ class dummy(datasource):
                          {"key" : "storyname", "question" : "Where was the ABC story {{value}} located?" }
                         ]
         #these can be hardcoded or dynamically populated
-        self.locations = [{"id" : "0", "name" : "test", "geometry" : {"type" : "Point",
+        self.locations = { "test" : {"id" : "0", "name" : "test", "geometry" : {"type" : "Point",
                                                                       "coordinates" : [45, 45]
                                                                      },
                                                         "values" : {"avage" : "67",
                                                                     "electorate" : "Melbourne"
                                                                    }
-                          }]
+                          }}
         self.cleanemptylocations()
         self.cleanemptydatasets()
 
