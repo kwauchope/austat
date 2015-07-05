@@ -1,31 +1,23 @@
 #!/usr/bin/env python
 
 
-from os import path
-
 import begin
-from bottle import run, static_file
 import bottle
+
 from controllers.leaderboard import leaderboardApp
 from controllers.topics import topicsApp
 from controllers.query import queryApp
+from controllers.static import staticApp
 
 
-BASE_DIR = path.dirname(path.realpath(__file__))
-STATIC_PATH = path.join(BASE_DIR, 'static')
+def create_app():
+    app = bottle.app()
+    app.merge(leaderboardApp)
+    app.merge(topicsApp)
+    app.merge(queryApp)
+    app.merge(staticApp)
 
-
-app = bottle.app()
-
-
-@app.route('/static/<filename>')
-def server_static(filename):
-    return static_file(filename, root=STATIC_PATH)
-
-
-@app.route('/hello')
-def hello():
-    return "Hello World!"
+    return app
 
 
 @begin.start
@@ -43,7 +35,5 @@ def main(hostname='0.0.0.0', port=8080, dev=True, debug=True):
 
     debug: Log requests
     """
-    app.merge(leaderboardApp)
-    app.merge(topicsApp)
-    app.merge(queryApp)
+    app = create_app()
     app.run(host=hostname, port=port, debug=debug, reloader=dev)
