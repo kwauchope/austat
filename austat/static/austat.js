@@ -33,10 +33,10 @@ Austat.prototype.checkboxQuestion = function(question){
     var tmpl = $('#checkbox-template').html();
     var html = Mustache.render(tmpl, question);
     $('#question').html(html);
-
+    var mapObj = this
     $('#question input[type=radio]').click(function(){
         var selected = $(this).attr('id');
-        results(selected);
+        mapObj.results(selected);
         return false;
     });
     $('#question').closest('.card').slideDown();
@@ -100,6 +100,7 @@ Austat.prototype.results = function(selected){
     $('#question').closest('.card').slideUp(function(){
         $('#answer').closest('.card').slideDown();
     });
+    var mapObj = this;
     //answer.answer.correct = false;
     //if ('answer_' + answer.answer.id === selected){
     //    answer.answer.correct = true;
@@ -108,7 +109,7 @@ Austat.prototype.results = function(selected){
     var html = Mustache.render(tmpl, answer);
     $('#answer').html(html);
     $('#answer #next').click(function(){
-        this.makeQuestion()
+        mapObj.makeQuestion()
         $(this).closest('.card').slideUp(function(){
             $('#question').closest('.card').slideDown();
         });
@@ -124,19 +125,19 @@ Austat.prototype.addPlacemarks = function(question){
     if (this.layer){
         this.map.removeLayer(this.layer);
     }
+    var mapObj = this
     question.locations.forEach(function(elem){
-        
-        var geom = L.geoJson(elem.geometry);
-        geom.on('click',function(evt){
-            //TODO call result on geom val
-        })
-         // TODO on hover display labels
-        geom.bindPopup(elem.value);
+        geom = L.geoJson(elem.geometry);
+        geom.bindPopup(elem.name);
         geom.on('mouseover', function(e) {
             e.layer.openPopup();
         });
         geom.on('mouseout', function(e) {
             e.layer.closePopup();
+        });
+        geom.on('click', function(e) {
+            mapObj.results(geom.value)
+            $('#map').closest('.card').slideUp();
         });
         geom.openPopup();
         geom.addTo(map);
