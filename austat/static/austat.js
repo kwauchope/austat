@@ -26,9 +26,9 @@ Austat.prototype.get_map = function(){
         var osm = new L.TileLayer(osmUrll, {minZoom: 0, maxZoom: 12, attribution: osmAttrib});
         
         // start the map in Central Australia
-        this.map.setView(new L.LatLng(-24.967335, 134.625094),4);
         this.map.addLayer(osm);
     }
+    this.map.setView(new L.LatLng(-27.967335, 134.625094), 4);
     return this.map;
 }
 

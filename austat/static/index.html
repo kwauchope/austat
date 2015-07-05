@@ -6,9 +6,9 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/css/materialize.min.css">
         <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
         <script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
-        <script src="austat.js"></script>
-        <link rel="stylesheet" href="map.css">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <script src="austat.js"></script>
+        <link rel="stylesheet" href="austat.css">
     </head>
     <body>
         <nav>
@@ -20,7 +20,7 @@
                 </div>
             </div>
             <div class="nav-wrapper blue-grey">
-                <a href="#" class="brand-logo" style="padding-left:20px;">AUSTAT</a>
+                <a href="#" class="brand-logo">AUSTAT</a>
             </div>
         </nav>
                
@@ -73,9 +73,7 @@
                 {{^correct}}
                     <i class="fa fa-times fa-5x red-text"></i>
                 {{/correct}}
-            </div>
-            <div class="row">
-               <h4><strong>{{answer}}</strong> is the correct answer.</h4>
+                <h4><strong>{{answer}}</strong> is the correct answer.</h4>
             </div>
             <div class="row">
                 {{details}}
