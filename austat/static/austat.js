@@ -68,8 +68,8 @@ Austat.prototype.makeQuestion = function(){
             var l = austat.getRandomItem(q.locations);
             q.question = Mustache.render(q.question, l)
             var details = null;
-            if (l.link) {
-                details = l.link;
+            if (q.link) {
+                details = q.link;
             }
             austat.answer = {value: l.value, name: l.name, details: details};
             if(l.geometry){
