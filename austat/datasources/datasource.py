@@ -81,5 +81,5 @@ class datasource(object):
         response = {'question': self.datasets[datasetid]['question'],
                 "locations": results}
         if 'link' in self.datasets[datasetid]:
-            response['link'] = self.datasets[datasetid]
+            response['link'] = self.datasets[datasetid]['link']
         return response
