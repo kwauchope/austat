@@ -28,13 +28,13 @@
             <div class="container">
                 <div class="col l12 m12 s12">
                     <div class="card" style="display:None">
-                        <span class="text-darken-2 center-align">
-                            <h3 id="mapQuestion"></h3></span>
-                        <div class="question" id="map"></div>
+                        <div class="question"></div>
+                        <div class="questioncontent" id="map"></div>
                     </div>
                     <div class="card" style="display:None">
                         <div class="card-content">
-                            <div class="question" id="checkboxes"></div>
+                            <div class="question"></div>
+                            <div class="questioncontent" id="checkboxes"></div>
                         </div>
                     </div>
                     <div class="card" style="display:None">
@@ -46,7 +46,9 @@
             </div>
         </div>
         <script id="question-template" type="x-tmpl-mustashe">
-            {{question}}
+            <span class="text-darken-2 center-align">
+                <h3>{{question}}</h3>
+            </span>
         </script>
         <script id="topics-template" type="x-tmpl-mustache">
             {{#.}}
@@ -82,9 +84,6 @@
             </div>
         </script>
         <script id="checkbox-template" type="x-tmpl-mustache">
-            <div class="row">
-                <h4>{{question}}</h4>
-            </div>
             <form>
                 <div class="row">
                     {{#locations}}
