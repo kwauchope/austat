@@ -24,7 +24,7 @@
                 <a href="#" class="brand-logo center" style="padding-left:20px;"><img src="/static/logo.png" alt="AUSTAT" style="height:64px;"></img></a>
                 <ul class="right">
                     <li>
-                        <a class="modal-trigger" href="#modal1"><i class="material-icons">equalizer</i></a>
+                        <a class="modal-trigger" href="#score-modal"><i class="material-icons">equalizer</i></a>
                     </li>
                 </ul>
             </div>
@@ -76,25 +76,50 @@
             </div>
         </div>
 
-        <!-- Score Modal -->
-        <div id="modal1" class="modal bottom-sheet">
-          <div class="modal-content">
+        <div id="score-modal" class="modal bottom-sheet">
+            <div class="modal-content">
+            </div>
+        </div>
+
+        <div id="game-modal" class="modal bottom">
+            <div class="modal-content">
+            </div>
+        </div>
+
+        <script id="gameover-template" type="x-tmpl-mustashe">
+            <div class="row">
+                <div class="col s12 center-align">
+                    <h4>You scored: {{correct}}/10</h4>
+                </div>
+            </div> 
+            <div class="row">
+                <div class="col s12">
+                    <div class="right valign-wrapper">
+                        <i class="indigo-text fa fa-facebook-official fa-4x valign" style="padding-right:5px"></i>
+                        <button class="btn-large waves-effect waves-light valign">
+                            Play Again
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </script>
+
+        <script id="scorecard-template" type="x-tmpl-mustashe">
             <div class="row">
                 <div class="col s4">
                     <div class="center-align"><i class="fa fa-star fa-5x amber-text"></i></div>
+                    <div class="center-align"><strong>{{total}} Correct Answers</strong></div>
                 </div>
                 <div class="col s4">
                     <div class="center-align"><div class="fa fa-5x green-text">%</div></div>
+                    <div class="center-align"><strong>{{percent_correct}}%</strong></div>
                 </div>
                 <div class="col s4">
                     <div class="center-align"><i class="fa fa-trophy fa-5x amber-text"></i></div>
+                    <div class="center-align"><strong>#{{rank}}</strong></div>
                 </div>
             </div>
-          </div>
-          <div class="modal-footer">
-          </div>
-        </div>
-
+        </script>
         <script id="question-template" type="x-tmpl-mustashe">
             <span class="text-darken-2 center-align">
                 <h4>{{question}}</h4>

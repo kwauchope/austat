@@ -4,6 +4,13 @@ $(document).ready(function(){
     });
 
     $(".modal-trigger").leanModal();
+    $(".modal-trigger").click(function(){
+        $.getJSON('/leaderboard', function(data){
+            data['percent_correct'] = Math.round(data['percent_correct']);
+            tmpl = $('#scorecard-template').html();
+            $('#score-modal .modal-content').html(Mustache.render(tmpl, data))
+        })
+    });
 
     $("#welcome.card-panel i").click(function(){
         $(this).closest('.card-panel').slideUp();
@@ -20,6 +27,7 @@ function Austat(){
     this.question_max = 10;
     this.makeTopics();
     this.makeQuestion();
+    this.correct = 0;
 }
 
 Austat.prototype.get_map = function(){
@@ -132,6 +140,10 @@ Austat.prototype.results = function(selected){
     });
     $('#answer').closest('.card').slideDown();
 
+    if(correct){
+        austat.correct += 1;
+    };
+
     var tmpl = $('#answer-template').html();
     var html = Mustache.render(tmpl, {correct: correct, answer: austat.answer.name, details: austat.answer.details});
     $('#answer').html(html);
@@ -140,7 +152,7 @@ Austat.prototype.results = function(selected){
             austat.question_num += 1;
             $('.progress .determinate').css('width', (austat.question_num * 10) + '%');
             if(austat.question_num < 10){
-                austat.makeQuestion()
+                austat.makeQuestion();
             }else{
                 austat.gameFinished();
             }
@@ -149,8 +161,15 @@ Austat.prototype.results = function(selected){
 }
 
 Austat.prototype.gameFinished = function(){
-    alert('GET REKT');
-    this.question_num = 1;
+    var austat = this;
+    var tmpl = $('#gameover-template').html();
+    $('#game-modal .modal-content').html(Mustache.render(tmpl, {correct:austat.correct}));
+    $('#game-modal').openModal();
+    
+    $('#game-modal button').click(function(){
+        window.location.reload()
+    });
+ 
 }
 Austat.prototype.addPlacemarks = function(question){
     var austat = this;
