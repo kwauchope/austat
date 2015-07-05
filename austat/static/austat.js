@@ -7,6 +7,7 @@ $(document).ready(function(){
 });
 function Austat(){
     this.map = null;
+    this.layer = null;
     this.makeTopics();
     this.makeQuestion();
 }
@@ -120,8 +121,12 @@ Austat.prototype.addPlacemarks = function(question){
     var html = Mustache.render(tmpl, question);
     $('#mapQuestion').html(html);
     $('#question').closest('.card').prev().slideDown();
+    if (this.layer){
+        this.map.removeLayer(this.layer);
+    }
     question.locations.forEach(function(elem){
-        geom = L.geoJson(elem.geometry);
+        
+        var geom = L.geoJson(elem.geometry);
         geom.on('click',function(evt){
             //TODO call result on geom val
         })
@@ -135,6 +140,7 @@ Austat.prototype.addPlacemarks = function(question){
         });
         geom.openPopup();
         geom.addTo(map);
+        this.layer = geom;
         map.invalidateSize()
     });
 }
