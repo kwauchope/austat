@@ -1,4 +1,4 @@
-__all__ = ["dummy", "demographics", "todo"]
+__all__ = ["dummy", "demographics", "todo", "economic", "social"]
 
 _SOURCES = []
 
