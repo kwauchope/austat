@@ -26,7 +26,7 @@ def create_app():
 @begin.start
 @begin.logging
 @begin.convert(port=int, debug=bool, dev=bool)
-def main(hostname='0.0.0.0', port=8080, dev=True, debug=True):
+def main(hostname='0.0.0.0', port=8080, dev=False, debug=True):
     """
     Start up the service
 
