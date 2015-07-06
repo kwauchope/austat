@@ -10,6 +10,7 @@ import bottle
 from controllers.leaderboard import leaderboardApp
 from controllers.topics import topicsApp
 from controllers.query import queryApp
+from controllers.facts import factsApp
 from controllers.static import staticApp
 
 
@@ -18,6 +19,7 @@ def create_app():
     app.merge(leaderboardApp)
     app.merge(topicsApp)
     app.merge(queryApp)
+    app.merge(factsApp)
     app.merge(staticApp)
 
     return app
