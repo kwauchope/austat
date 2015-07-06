@@ -14,7 +14,7 @@ def getsources():
                 module = _import("datasources.", datasource, [datasource])
             source = getattr(module, datasource)()
             if len(source.getdatasets()) > 0:
-                _SOURCES.append(getattr(module, datasource)())
+                _SOURCES.append(source)
     return _SOURCES
 
 
