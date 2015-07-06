@@ -21,4 +21,4 @@ def getsources():
 def available_sources():
     srcs = getsources()
 
-    return list({'id': x[0], 'name': x[1].name} for x in enumerate(srcs))
+    return list({'id': x[0], 'name': x[1].name, "answers" : x[1].answers} for x in enumerate(srcs))

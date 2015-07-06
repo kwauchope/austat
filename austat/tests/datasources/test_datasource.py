@@ -11,8 +11,14 @@ def getsources():
         dslist = datasources.getsources()
     return dslist
 
-def test_getsources():
-    getsources()
+def test_available_sources():
+    srckeys = set(['id', 'name'])
+    ids = []
+    for src in datasources.available_sources():
+        assert(srckeys.issubset(set(src.keys())))
+        ids.append(src['id'])
+    #ensure ids are unique
+    assert(len(ids) == len(set(ids)))
 
 def test_locations():
     lockeys = set(['id', 'name', 'geometry', 'values'])
@@ -28,12 +34,16 @@ def test_locations():
         assert(len(ids) == len(set(ids)))
 
 def test_datasets():
-    datakeys = set(['key', 'question'])
+    datakeys = set(['id', 'key', 'question', 'answers'])
     for source in getsources():
+        ids = []
         datasets = source.getdatasets()
         assert(len(datasets) > 0)
         for dataset in datasets:
             assert(datakeys.issubset(set(dataset.keys())))
+            ids.append(dataset['id'])
+        #ensure ids are unique
+        assert(len(ids) == len(set(ids)))
 
 def getlocationids(locs):
     ids = []
