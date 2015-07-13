@@ -7,7 +7,6 @@ try:
 except ImportError:
     from austat.datasources import getsources
 
-
 queryApp = bottle.Bottle()
 
 

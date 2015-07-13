@@ -1,5 +1,10 @@
-from datasource import datasource
+try:
+    from .datasource import datasource
+except ImportError:
+    from datasource import datasource
+
 import sys
+
 class dummy(datasource):
 
     def __init__(self):

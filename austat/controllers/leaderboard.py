@@ -4,7 +4,7 @@ from collections import Counter
 import json
 import itertools
 import logging
-
+import sys
 
 leaderboardApp = bottle.Bottle()
 
@@ -29,11 +29,18 @@ def get_rank(user):
         return 0, 0, 0
 
     ranks = {}
-    for u, tot in ATTEMPTS.iteritems():
-        correct = STATS_CORRECT.get(u, 0)
-        ranks[u] = correct/float(tot), tot
+    ranked = []
+    if sys.version_info >= (3, 0):
+        for u, tot in ATTEMPTS.items():
+            correct = STATS_CORRECT.get(u, 0)
+            ranks[u] = correct/float(tot), tot
+        ranked = sorted(ranks.items(), key=lambda x: x[1], reverse=True)
+    else:
+        for u, tot in ATTEMPTS.iteritems():
+            correct = STATS_CORRECT.get(u, 0)
+            ranks[u] = correct/float(tot), tot
+        ranked = sorted(ranks.iteritems(), key=lambda x: x[1], reverse=True)
 
-    ranked = sorted(ranks.iteritems(), key=lambda x: x[1], reverse=True)
     user_info = next((x for x in enumerate(ranked, 1) if x[1][0] == user))
     u_rank = user_info[0]
     totals =  len(ATTEMPTS)

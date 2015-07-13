@@ -1,9 +1,11 @@
-from datasource import datasource
+try:
+    from .datasource import datasource
+except ImportError:
+    from datasource import datasource
+
 import csv
 import os
-
-import sys
-import json
+import os.path
 
 class csvdatasource(datasource):
 
@@ -15,10 +17,14 @@ class csvdatasource(datasource):
 
     def loadCSV(self, category):
         datasetmap = {}
+        #main
         csvlocation = "data/"
-        questionfile = open(os.path.join(csvlocation, 'Questions.csv'), 'rb')
-        factfile = open(os.path.join(csvlocation, 'Facts.csv'), 'rb')
-        placesfile = open(os.path.join(csvlocation, 'Places.csv'), 'rb')
+        #nosetests, seems to have cwd in top level test dir
+        if os.path.basename(os.getcwd()) == "tests":
+            csvlocation = "../../data/"
+        questionfile = open(os.path.join(csvlocation, 'Questions.csv'), 'rt')
+        factfile = open(os.path.join(csvlocation, 'Facts.csv'), 'rt')
+        placesfile = open(os.path.join(csvlocation, 'Places.csv'), 'rt')
         questionreader = csv.DictReader(questionfile, delimiter=',')
         factreader = csv.DictReader(factfile, delimiter=',')
         placesreader = csv.DictReader(placesfile, delimiter=',')

@@ -1,5 +1,7 @@
-from .csvdatasource import csvdatasource
-
+try:
+    from .csvdatasource import csvdatasource
+except ImportError:
+    from csvdatasource import csvdatasource
 
 class economic(csvdatasource):
 

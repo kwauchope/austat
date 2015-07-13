@@ -1,9 +1,15 @@
 import random
-
+import sys
 
 class datasource(object):
 
     def __init__(self, name):
+        #add locationsids[] or locations{} to datasets for choice
+        #value in locaiton like current or in dataset {id:value}, easiest to test, msot eficient?
+        #only one lot of locaitons which is less mem, also no need to search to get one with the value
+        #do empty locations get cleaned or keptd for dynamic addition?
+        #list means might be better to remove options on random (cpu vs mem)
+        #unique ids on (name,postcode)?
         self.datasets = []
         self.locations = {}
         self.answers = 0
@@ -18,9 +24,14 @@ class datasource(object):
     #clean empty locations to save mem
     def cleanemptylocations(self):
         todel = []
-        for name, location in self.locations.iteritems():
-            if len(location['values']) == 0:
-                todel.append(name)
+        if sys.version_info >= (3, 0):
+            for name, location in self.locations.items():
+                if len(location['values']) == 0:
+                    todel.append(name)
+        else:
+            for name, location in self.locations.iteritems():
+                if len(location['values']) == 0:
+                    todel.append(name)
         for name in todel:
             del self.locations[name]
 
@@ -41,7 +52,11 @@ class datasource(object):
             raise Exception("Need to get at least one location")
         locs = []
         ids = {}
-        lockeys = self.locations.keys()
+        lockeys = []
+        if sys.version_info >= (3, 0):
+            lockeys = list(self.locations.keys())
+        else:
+            lockeys = self.locations.keys()
         num = min(len(lockeys), n)
         while len(locs) < num:
             possible = random.choice(lockeys)
