@@ -16,7 +16,7 @@ def test_query_without_id_fails():
 
 
 def test_query_with_string_id_fails():
-    res = APP.get('/query/', expect_errors=True)
+    res = APP.get('/query/hello', expect_errors=True)
     assert res.status_code == 404
 
 
